@@ -1,1 +1,0 @@
-Data, Acoes, Inicio, Maior, Menor, Fim, Volume
