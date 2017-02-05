@@ -15,7 +15,7 @@ performances = {}
 
 
 def percentchange(ant, pos):
-    return ((float(pos)-ant)/abs(ant))*100
+    return round(((float(pos)-ant)/abs(ant))*100, 2)
 
 
 def getpattern(stock):
@@ -63,8 +63,11 @@ def getpattern(stock):
         else:
             performances[stock].append(percentFuture)
 
+        pattern = []
+
         i += 1
         x += 1
 
 getpattern('AA')
 print patterns['AA']
+print performances['AA']
