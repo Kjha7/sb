@@ -10,6 +10,9 @@ class Stock(Patterns):
         self._stock = stock
         self._pattern = {}
         self._performances = {}
+        self.ler_dataset()
+        self.gerar_padroes()
+        self.comparar_com_anteriores()
 
     @property
     def stock(self):
@@ -23,37 +26,38 @@ class Stock(Patterns):
     def performances(self):
         return self._performances
 
-    def read_dataset(self):
-        super(Stock, self).read_dataset()
+    def ler_dataset(self):
+        super(Stock, self).ler_dataset()
 
-    def percentchange(self, ant, pos):
-        return super(self.__class__, self).percentchange(ant, pos)
+    def mudanca_percentual(self, ant, pos):
+        return super(self.__class__, self).mudanca_percentual(ant, pos)
 
-    def get_stock_patterns(self):
+    def gerar_padroes(self):
 
         pattern_array = []
         
         x = self.data.index.get_loc(self.data[self.data.stock == self._stock].iloc[0].name) + 10
-        y = len(self.data[self.data.stock == self._stock])
+        y = len(self.data[self.data.stock == self._stock]) - 10
 
         i = 0
 
         while i < y:
-            pattern_array.append(self.percentchange(self.data['avg'][x - 10], self.data['avg'][x - 9]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 9], self.data['avg'][x - 8]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 8], self.data['avg'][x - 7]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 7], self.data['avg'][x - 6]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 6], self.data['avg'][x - 5]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 5], self.data['avg'][x - 4]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 4], self.data['avg'][x - 3]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 3], self.data['avg'][x - 2]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 2], self.data['avg'][x - 1]))
-            pattern_array.append(self.percentchange(self.data['avg'][x - 1], self.data['avg'][x]))
 
-            future = self.data['avg'][x+1]
-            actual = self.data['avg'][x]
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 10], self.data['avg'][x - 9]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 9], self.data['avg'][x - 8]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 8], self.data['avg'][x - 7]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 7], self.data['avg'][x - 6]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 6], self.data['avg'][x - 5]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 5], self.data['avg'][x - 4]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 4], self.data['avg'][x - 3]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 3], self.data['avg'][x - 2]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 2], self.data['avg'][x - 1]))
+            pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 1], self.data['avg'][x]))
 
-            percentFuture = self.percentchange(actual, future)
+            futuro = self.data['avg'][x+1]
+            atual = self.data['avg'][x]
+
+            percentfuturo = self.mudanca_percentual(atual, futuro)
 
             if self._stock not in self._pattern:
                 self._pattern[self._stock] = []
@@ -63,47 +67,49 @@ class Stock(Patterns):
 
             if self._stock not in self._performances:
                 self._performances[self._stock] = []
-                self._performances[self._stock].append(percentFuture)
+                self._performances[self._stock].append(percentfuturo)
             else:
-                self._performances[self._stock].append(percentFuture)
+                self._performances[self._stock].append(percentfuturo)
 
             pattern_array = []
 
             i += 1
             x += 1
 
-    def last_day(self):
-        return len(self.data[self.data.stock == self._stock]) - self.data.index.get_loc(self.data[self.data.stock == self._stock].iloc[0].name) - 1
+    def dia_atual(self):
+        return self.data.index.get_loc(self.data[self.data.stock == self._stock].iloc[0].name) + len(self.data[self.data.stock == self._stock])
 
-    def get_most_recent_pattern(self):
+    def gerar_padrao_atual(self):
         pattern_array = []
 
-        x = self.last_day()
+        x = self.dia_atual() - 1
 
-        pattern_array.append(self.percentchange(self.data['avg'][x - 10], self.data['avg'][x - 9]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 9], self.data['avg'][x - 8]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 8], self.data['avg'][x - 7]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 7], self.data['avg'][x - 6]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 6], self.data['avg'][x - 5]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 5], self.data['avg'][x - 4]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 4], self.data['avg'][x - 3]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 3], self.data['avg'][x - 2]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 2], self.data['avg'][x - 1]))
-        pattern_array.append(self.percentchange(self.data['avg'][x - 1], self.data['avg'][x]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 10], self.data['avg'][x - 9]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 9], self.data['avg'][x - 8]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 8], self.data['avg'][x - 7]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 7], self.data['avg'][x - 6]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 6], self.data['avg'][x - 5]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 5], self.data['avg'][x - 4]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 4], self.data['avg'][x - 3]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 3], self.data['avg'][x - 2]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 2], self.data['avg'][x - 1]))
+        pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 1], self.data['avg'][x]))
 
         return pattern_array
 
-    def compare_with_previous(self):
-        recent = self.get_most_recent_pattern()
+    def comparar_com_anteriores(self):
+        recent = self.gerar_padrao_atual()
 
-        closest_pattern = 0
-        closest_distance = distance.euclidean(recent, self._pattern[self._stock][0])
+        padrao_mais_prox = 0
+        distancia_mais_prox = distance.euclidean(recent, self._pattern[self._stock][0])
 
         for i in range(len(self._pattern[self._stock]) - 1):
-            if(recent != self._pattern[self._stock][i]):
-                if distance.euclidean(recent, self._pattern[self._stock][i]) < closest_distance:
-                    closest_pattern = i
-                    closest_distance = distance.euclidean(recent, self._pattern[self._stock][i])
+            if(i != self.dia_atual() - 1):
+                if distance.euclidean(recent, self._pattern[self._stock][i]) < distancia_mais_prox:
+                    padrao_mais_prox = i
+                    distancia_mais_prox = distance.euclidean(recent, self._pattern[self._stock][i])
+
+        print '\nNome da ação: %s' % self._stock
 
         print '\nPadrão do dia atual: '
         
@@ -112,19 +118,18 @@ class Stock(Patterns):
 
         print '\nPadrão mais próximo dos dias anteriores: ' 
         
-        for i, j in enumerate(self._pattern[self._stock][closest_pattern]):
+        for i, j in enumerate(self._pattern[self._stock][padrao_mais_prox]):
             print '%d: %f' % (i, j)
 
-        print "\nPrevisão de variação: %f" % self._performances[self._stock][closest_pattern]
+        print "\nPrevisão de variação: %f" % self._performances[self._stock][padrao_mais_prox]
 
-        x = self.last_day()
-        value = self.data['avg'][x] + (self.data['avg'][x] * self._performances[self._stock][closest_pattern]) 
+        x = self.dia_atual()
+        valor = self.data['avg'][x] + (self.data['avg'][x] * self._performances[self._stock][padrao_mais_prox]) 
 
         print "\nMédia de hoje: %f" % self.data['avg'][x]
-        print "\nPróximo valor: %f" % value
+        print "\nEstimativa para o próximo valor: %f" % valor
 
-        if value < self.data['avg'][x]:
+        if valor < self.data['avg'][x]:
             print '\nA tendência é que no próximo dia a sua ação irá diminuir de valor'
         else:
             print '\nA tendência é que no próximo dia a sua ação irá aumentar de valor'
-

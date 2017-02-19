@@ -7,7 +7,7 @@ class Patterns(object):
 	def __init__(self, dataset):
 		self._dataset = dataset
 
-	def read_dataset(self):
+	def ler_dataset(self):
 		self.data = pd.read_csv(self._dataset,
                    				delimiter=',',
                    				names=['date', 'stock', 'min', 'max'],
@@ -15,5 +15,5 @@ class Patterns(object):
 
 		self.data['avg'] = self.data[['min', 'max']].mean(axis=1)
 
-	def percentchange(self, ant, pos):	
+	def mudanca_percentual(self, ant, pos):	
 		return (float(pos)-ant)/abs(ant)
