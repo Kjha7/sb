@@ -4,8 +4,7 @@ from scipy.spatial import distance
 
 class Stock(Patterns):
 
-    def __init__(self, stock, dataset):
-        
+    def __init__(self, stock, dataset): 
         super(self.__class__, self).__init__(dataset)
         self._stock = stock
         self._pattern = {}
@@ -33,7 +32,6 @@ class Stock(Patterns):
         return super(self.__class__, self).mudanca_percentual(ant, pos)
 
     def gerar_padroes(self):
-
         pattern_array = []
         
         x = self.data.index.get_loc(self.data[self.data.stock == self._stock].iloc[0].name) + 10
@@ -42,7 +40,6 @@ class Stock(Patterns):
         i = 0
 
         while i < y:
-
             pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 10], self.data['avg'][x - 9]))
             pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 9], self.data['avg'][x - 8]))
             pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 8], self.data['avg'][x - 7]))
