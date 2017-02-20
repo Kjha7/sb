@@ -3,4 +3,5 @@ Projeto para previsão de preços da bolsa de valores utilizando machine learnin
 
 ### Running
 `pip install -r requirements.txt`
+
 `python start.py`
