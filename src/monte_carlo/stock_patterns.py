@@ -26,7 +26,7 @@ class Stock(Patterns):
         return self._performances
 
     def ler_dataset(self):
-        super(Stock, self).ler_dataset()
+        super(self.__class__, self).ler_dataset()
 
     def mudanca_percentual(self, ant, pos):
         return super(self.__class__, self).mudanca_percentual(ant, pos)
