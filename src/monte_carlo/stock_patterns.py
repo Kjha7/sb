@@ -25,6 +25,10 @@ class Stock(Patterns):
     def performances(self):
         return self._performances
 
+    @property
+    def dia_atual(self):
+        return self.data.index.get_loc(self.data[self.data.stock == self._stock].iloc[0].name) + len(self.data[self.data.stock == self._stock])
+
     def ler_dataset(self):
         super(self.__class__, self).ler_dataset()
 
@@ -33,7 +37,7 @@ class Stock(Patterns):
 
     def gerar_padroes(self):
         pattern_array = []
-        
+
         x = self.data.index.get_loc(self.data[self.data.stock == self._stock].iloc[0].name) + 10
         y = len(self.data[self.data.stock == self._stock]) - 10
 
@@ -73,13 +77,10 @@ class Stock(Patterns):
             i += 1
             x += 1
 
-    def dia_atual(self):
-        return self.data.index.get_loc(self.data[self.data.stock == self._stock].iloc[0].name) + len(self.data[self.data.stock == self._stock])
-
     def gerar_padrao_atual(self):
         pattern_array = []
 
-        x = self.dia_atual() - 1
+        x = self.dia_atual - 1
 
         pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 10], self.data['avg'][x - 9]))
         pattern_array.append(self.mudanca_percentual(self.data['avg'][x - 9], self.data['avg'][x - 8]))
@@ -101,27 +102,28 @@ class Stock(Patterns):
         distancia_mais_prox = distance.euclidean(recent, self._pattern[self._stock][0])
 
         for i in range(len(self._pattern[self._stock]) - 1):
-            if(i != self.dia_atual() - 1):
-                if distance.euclidean(recent, self._pattern[self._stock][i]) < distancia_mais_prox:
+            if(i != self.dia_atual - 1):
+                distancia_comp = distance.euclidean(recent, self._pattern[self._stock][i])
+                if distancia_comp < distancia_mais_prox:
                     padrao_mais_prox = i
-                    distancia_mais_prox = distance.euclidean(recent, self._pattern[self._stock][i])
+                    distancia_mais_prox = distancia_comp
 
         print '\nNome da ação: %s' % self._stock
 
         print '\nPadrão do dia atual: '
-        
+
         for i, j in enumerate(recent):
             print '%d: %f' % (i, j)
 
-        print '\nPadrão mais próximo dos dias anteriores: ' 
-        
+        print '\nPadrão mais próximo dos dias anteriores: '
+
         for i, j in enumerate(self._pattern[self._stock][padrao_mais_prox]):
             print '%d: %f' % (i, j)
 
         print "\nPrevisão de variação: %f" % self._performances[self._stock][padrao_mais_prox]
 
-        x = self.dia_atual()
-        valor = self.data['avg'][x] + (self.data['avg'][x] * self._performances[self._stock][padrao_mais_prox]) 
+        x = self.dia_atual
+        valor = self.data['avg'][x] + (self.data['avg'][x] * self._performances[self._stock][padrao_mais_prox])
 
         print "\nMédia de hoje: %f" % self.data['avg'][x]
         print "\nEstimativa para o próximo valor: %f" % valor
