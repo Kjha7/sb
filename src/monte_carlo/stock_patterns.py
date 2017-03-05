@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from patterns import Patterns
 from math import sqrt, pow
-import settings
+from settings import settings
 
 
 class Stock(Patterns):

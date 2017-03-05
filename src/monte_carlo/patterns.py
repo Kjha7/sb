@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
-import settings
+from settings import settings
 
 
 class Patterns(object):

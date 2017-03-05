@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from monte_carlo import patterns, stock_patterns, connect
+from monte_carlo import patterns, stock_patterns
+from monte_carlo.settings import connect
 
 if __name__ == "__main__":
     con = connect.Connect()
