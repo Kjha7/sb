@@ -1,19 +1,28 @@
 # -*- coding: utf-8 -*-
-import pandas as pd 
-import matplotlib.dates as mdates
+import pandas as pd
+import settings
+
 
 class Patterns(object):
+    def __init__(self, data=None):
+        self._data_set = settings.PATH_TO_DATA
+        self._data = data
 
-	def __init__(self, dataset):
-		self._dataset = dataset
+    @property
+    def data(self):
+        return self._data
 
-	def ler_dataset(self):
-		self.data = pd.read_csv(self._dataset,
-                   				delimiter=',',
-                   				names=['date', 'stock', 'min', 'max'],
-                   				converters={0: mdates.strpdate2num('%Y%m%d')})
+    @data.setter
+    def data(self, value):
+        self._data = value
 
-		self.data['avg'] = self.data[['min', 'max']].mean(axis=1)
+    def read_data(self):
+        dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
 
-	def mudanca_percentual(self, ant, pos):	
-		return (float(pos)-ant)/abs(ant)
+        self.data = pd.read_csv(self._data_set,
+                                delimiter=',',
+                                names=['date', 'open', 'high', 'low', 'close', 'volume', 'adj close'],
+                                parse_dates=['date'],
+                                date_parser=dateparse)
+
+        self.data['avg'] = self.data[['low', 'high']].mean(axis=1)
