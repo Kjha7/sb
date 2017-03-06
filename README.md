@@ -1,5 +1,5 @@
 # stock-bots
-Projeto para previsão de preços da bolsa de valores utilizando machine learning.
+Projeto para estimativa de preços da bolsa de valores utilizando machine learning.
 
 ### Running
 `pip install -r requirements.txt`
