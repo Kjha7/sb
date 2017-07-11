@@ -3,7 +3,7 @@
 from monte_carlo import patterns, stock_patterns
 from monte_carlo.settings import connect
 
-if __name__ == "__main__":
+def main():
     con = connect.Connect()
     con.get_csv()
 
@@ -11,3 +11,6 @@ if __name__ == "__main__":
     patterns.read_data()
 
     stock = stock_patterns.Stock()
+
+if __name__ == "__main__":
+    main()
