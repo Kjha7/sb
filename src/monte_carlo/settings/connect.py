@@ -13,8 +13,5 @@ class Connect(object):
 
         with open(settings.PATH_TO_DATA, 'w') as csv_file:
             content = content.split('\n')
-            for line in range(len(content)):
-                if line == 0:
-                    pass
-                else:
-                    csv_file.write(content[line] + '\n')
+            for line in range(1, len(content)):
+                csv_file.write(content[line] + '\n')
