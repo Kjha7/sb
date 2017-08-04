@@ -2,6 +2,9 @@
 import pandas as pd
 from settings import settings
 
+# TODO
+# - Implementar como Singleton
+# - Tirar herança de Stock
 
 class Patterns(object):
     def __init__(self, data=None):
