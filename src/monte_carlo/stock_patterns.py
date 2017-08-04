@@ -105,10 +105,16 @@ class Stock(Patterns):
             if dist_comp < dist_prox:
                 prox = i
                 dist_prox = dist_comp
-
+                
+        return [ recent, 
+                self.pattern[prox], 
+                self.performances[prox], 
+                self.data.avg[0],
+                self.data.avg[x] + (self.data.avg[x] * self.performances[prox]) ]
+        
+        """
         print '\nAção: ' + settings.STOCK
         print '\nDia atual: ' + str(self.data.date[0])
-
         print '\nPadrão do dia atual: '
 
         for i, j in enumerate(recent):
@@ -131,3 +137,4 @@ class Stock(Patterns):
             print '\nBaseada em padrões anteriores, a tendência é que no próximo dia a sua ação irá diminuir de valor'
         else:
             print '\nBaseada em padrões anteriores, a tendência é que no próximo dia a sua ação irá aumentar de valor'
+        """
